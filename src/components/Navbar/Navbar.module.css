@@ -1,0 +1,26 @@
+.navbar {
+  height: 64px;
+  background: #1976d2;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  justify-content: space-between;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}

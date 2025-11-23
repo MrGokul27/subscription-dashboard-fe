@@ -1,0 +1,16 @@
+.container {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: calc(100vh - 64px);
+}
+
+.main {
+  padding: 24px;
+  background: #f5f6fb;
+  min-height: calc(100vh - 64px);
+}
+@media (max-width: 800px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}

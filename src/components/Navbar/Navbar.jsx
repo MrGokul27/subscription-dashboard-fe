@@ -4,6 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout as logoutAction } from "../../store/slices/authSlice";
 import API from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAddAlt1Outlined";
+import LogoutIcon from "@mui/icons-material/Logout";
+
+import {
+  Container,
+  Grid,
+  Paper,
+  Avatar,
+  Typography,
+  Button,
+  Box,
+} from "@mui/material";
 
 export default function Navbar() {
   const auth = useSelector((s) => s.auth);
@@ -21,29 +34,50 @@ export default function Navbar() {
   return (
     <header className={styles.navbar}>
       <div className={styles.brand}>
-        <div
-          style={{ width: 36, height: 36, borderRadius: 8, background: "#fff" }}
-        />
-        <div>Subscription Dashboard</div>
+        <Typography variant="h5">Subscription Dashboard</Typography>
       </div>
       <div className={styles.actions}>
         {auth.user ? (
           <>
-            <div>
-              {auth.user.name} ({auth.user.role})
-            </div>
-            <button className={styles.button} onClick={logout}>
+            <Avatar sx={{ width: 35, height: 35 }} />
+            <Typography
+              variant="h7"
+              sx={{
+                color: "#fff",
+                padding: 2,
+                paddingLeft: 0,
+                borderRadius: "10px 10px 0 0",
+              }}
+            >
+              {auth.user.name}
+            </Typography>
+            <Button
+              variant="contained"
+              onClick={logout}
+              sx={{ backgroundColor: "#fff", color: "#000" }}
+              startIcon={<LogoutIcon />}
+            >
               Logout
-            </button>
+            </Button>
           </>
         ) : (
           <>
-            <button className={styles.button} onClick={() => nav("/login")}>
+            <Button
+              variant="contained"
+              onClick={() => nav("/login")}
+              sx={{ backgroundColor: "#fff", color: "#000" }}
+              startIcon={<LoginIcon />}
+            >
               Login
-            </button>
-            <button className={styles.button} onClick={() => nav("/register")}>
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => nav("/register")}
+              sx={{ backgroundColor: "#fff", color: "#000" }}
+              startIcon={<PersonAddIcon />}
+            >
               Register
-            </button>
+            </Button>
           </>
         )}
       </div>

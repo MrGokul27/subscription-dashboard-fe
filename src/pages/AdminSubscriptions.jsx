@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../api/axios";
 import {
-  Container,
+  Box,
   Paper,
   Typography,
   Table,
@@ -27,13 +27,26 @@ export default function AdminSubscriptions() {
   }, []);
 
   return (
-    <Container maxWidth="lg" style={{ marginTop: 24 }}>
-      <Typography variant="h5" gutterBottom>
+    <Box
+      sx={{
+        p: 2,
+        pb: 5,
+        borderRadius: 3,
+        minHeight: "calc(100vh - 100px)",
+        bgcolor: "#fff",
+        boxShadow: 1,
+      }}
+    >
+      <Typography
+        variant="h5"
+        gutterBottom
+        style={{ fontWeight: "500", marginBottom: "20px" }}
+      >
         All Subscriptions (Admin)
       </Typography>
-      <Paper style={{ padding: 16 }}>
+      <Paper >
         <Table>
-          <TableHead>
+          <TableHead sx={{ backgroundColor: "#e9eff6ff" }}>
             <TableRow>
               <TableCell>User</TableCell>
               <TableCell>Plan</TableCell>
@@ -57,6 +70,6 @@ export default function AdminSubscriptions() {
           </TableBody>
         </Table>
       </Paper>
-    </Container>
+    </Box>
   );
 }

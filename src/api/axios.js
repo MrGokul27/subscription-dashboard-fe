@@ -4,14 +4,13 @@ import { setCredentials, logout } from "../store/slices/authSlice";
 
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
-  withCredentials: true, // important to send/receive httpOnly cookie refresh token
+  withCredentials: true,
 });
 
-// request: attach access token from redux
+// Attach access token from Redux
 API.interceptors.request.use(
   (config) => {
-    const state = store.getState();
-    const token = state.auth.accessToken;
+    const token = store.getState().auth.accessToken;
     if (token) config.headers["Authorization"] = `Bearer ${token}`;
     return config;
   },
@@ -21,6 +20,7 @@ API.interceptors.request.use(
 let isRefreshing = false;
 let failedQueue = [];
 
+// Queue tokens during refresh
 const processQueue = (error, token = null) => {
   failedQueue.forEach((prom) => {
     if (error) prom.reject(error);
@@ -29,7 +29,7 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// response interceptor to handle 401
+// Handle 401 + refresh token
 API.interceptors.response.use(
   (res) => res,
   async (err) => {
@@ -41,7 +41,6 @@ API.interceptors.response.use(
       !originalRequest._retry
     ) {
       if (isRefreshing) {
-        // queue promise
         return new Promise(function (resolve, reject) {
           failedQueue.push({ resolve, reject });
         })
@@ -56,14 +55,19 @@ API.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const refreshRes = await axios.post(
+        const refreshURL =
           (import.meta.env.VITE_API_URL || "http://localhost:5000") +
-            "/api/auth/refresh",
+          "/api/auth/refresh";
+
+        const refreshRes = await axios.post(
+          refreshURL,
           {},
           { withCredentials: true }
         );
+
         const newToken = refreshRes.data.accessToken;
         const user = refreshRes.data.user;
+
         store.dispatch(setCredentials({ user, accessToken: newToken }));
 
         processQueue(null, newToken);

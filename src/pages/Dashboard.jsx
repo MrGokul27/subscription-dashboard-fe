@@ -42,11 +42,7 @@ export default function Dashboard() {
       >
         My Subscription
       </Typography>
-      <Grid
-        container
-        spacing={2}
-        alignItems="center"
-      >
+      <Grid container spacing={2} alignItems="center">
         <Grid item xs={12} sm={6} md={4}>
           <Paper
             style={{
@@ -81,7 +77,9 @@ export default function Dashboard() {
                 </Box>
               </>
             ) : (
-              <Typography>No active subscription</Typography>
+              <Typography sx={{ padding: 2, textAlign: "center" }}>
+                No active subscription
+              </Typography>
             )}
           </Paper>
         </Grid>

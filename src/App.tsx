@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -8,9 +8,36 @@ import Plans from "./pages/Plans";
 import Dashboard from "./pages/Dashboard";
 import AdminSubscriptions from "./pages/AdminSubscriptions";
 import ProtectedRoute from "./components/ProtectedRoute";
+import API from "./api/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials, logout } from "./store/slices/authSlice";
 import styles from "./styles/layout.module.css";
 
 export default function App() {
+  const dispatch = useDispatch();
+  const { user, accessToken } = useSelector((state) => state.auth);
+
+  // Auto refresh token on first load
+  useEffect(() => {
+    const restoreSession = async () => {
+      if (accessToken && user) return;
+
+      try {
+        const res = await API.post("/auth/refresh");
+        dispatch(
+          setCredentials({
+            user: res.data.user,
+            accessToken: res.data.accessToken,
+          })
+        );
+      } catch {
+        dispatch(logout());
+      }
+    };
+
+    restoreSession();
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -22,9 +49,11 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/plans" element={<Plans />} />
+
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
             </Route>
+
             <Route element={<ProtectedRoute requiredRole="admin" />}>
               <Route
                 path="/admin/subscriptions"

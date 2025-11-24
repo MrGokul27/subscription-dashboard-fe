@@ -4,6 +4,7 @@
   padding: 16px 16px 16px 0;
   min-height: calc(100vh - 64px);
 }
+
 .link {
   display: block;
   padding: 13px 12px;
@@ -13,6 +14,7 @@
   background: #e9eff6ff;
   text-decoration: none;
 }
+
 .linkActive {
   display: block;
   padding: 13px 12px;
@@ -21,4 +23,16 @@
   color: white;
   background: #1976d2;
   text-decoration: none;
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.link,
+.linkActive {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
